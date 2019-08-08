@@ -81,13 +81,13 @@ function cardCreator(dataObj) {
   userImg.src = dataObj.avatar_url;
   name.textContent = dataObj.name;
   username.textContent = dataObj.login;
-  location.textContent = `Location: ${dataObj.location}`;
+  location.textContent = `Location: ${dataObj.location || "none"}`;
   profile.textContent = `Profile: `;
   profileLink.href = dataObj.html_url;
   profileLink.textContent = dataObj.html_url;
   followers.textContent = `Followers: ${dataObj.followers}`;
   following.textContent = `Following: ${dataObj.following}`;
-  bio.textContent = `Bio: ${dataObj.bio}`;
+  bio.textContent = `Bio: ${dataObj.bio || "none"}`;
 
   // structure elements
   card.append(userImg);
