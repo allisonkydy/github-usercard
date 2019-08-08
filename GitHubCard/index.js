@@ -53,3 +53,9 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// GET request
+axios.get('https://api.github.com/users/allisonkydy')
+  .then(response => {
+    console.log(response);
+  })
