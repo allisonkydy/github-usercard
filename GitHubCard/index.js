@@ -110,29 +110,49 @@ function cardCreator(dataObj) {
   return card;
 }
 
-// GET request
+function createFollowers(followersArray) {
+  followersArray.forEach(follower => {
+    // request follower data
+    axios.get(follower.url)
+      .then(response => {
+      // create a card for each follower
+        const newUser = cardCreator(response.data);
+      // add card to DOM
+        document.querySelector('.cards').append(newUser);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  })
+}
+
+// request my own github data
 axios.get('https://api.github.com/users/allisonkydy')
   .then(response => {
-    console.log(response);
     // create new card using response data
     const newUser = cardCreator(response.data);
-
     // add card to DOM 
     document.querySelector('.cards').append(newUser);
+    // request follower data
+    return axios.get(response.data.followers_url);
+  })
+  .then(response => {
+    // create and add cards for each follower
+    createFollowers(response.data);
   })
   .catch(err => {
     console.log(err);
   })
 
-followersArray.forEach(user => {
-  axios.get(`https://api.github.com/users/${user}`)
-    .then(response => {
-    // create new card using response data
-    const newUser = cardCreator(response.data);
-    // add card to DOM 
-    document.querySelector('.cards').append(newUser);
-    })
-    .catch(err => {
-      console.log(err);
-    })
-})
+// followersArray.forEach(user => {
+//   axios.get(`https://api.github.com/users/${user}`)
+//     .then(response => {
+//     // create new card using response data
+//     const newUser = cardCreator(response.data);
+//     // add card to DOM 
+//     document.querySelector('.cards').append(newUser);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     })
+// })
