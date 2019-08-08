@@ -54,12 +54,6 @@ const followersArray = [];
   bigknell
 */
 
-// GET request
-// axios.get('https://api.github.com/users/allisonkydy')
-//   .then(response => {
-//     console.log(response);
-//   })
-
 function cardCreator(dataObj) {
   // create new elements
   const card = document.createElement('div');
@@ -74,6 +68,18 @@ function cardCreator(dataObj) {
   const following = document.createElement('p');
   const bio = document.createElement('p');
 
+  // add content
+  userImg.src = dataObj.avatar_url;
+  name.textContent = dataObj.name;
+  username.textContent = dataObj.login;
+  location.textContent = `Location: ${dataObj.location}`;
+  profile.textContent = `Profile: `;
+  profileLink.href = dataObj.html_url;
+  profileLink.textContent = dataObj.html_url;
+  followers.textContent = `Followers: ${dataObj.followers}`;
+  following.textContent = `Following: ${dataObj.following}`;
+  bio.textContent = `Bio: ${dataObj.bio}`;
+
   // structure elements
   card.append(userImg);
   card.append(cardInfo);
@@ -84,24 +90,26 @@ function cardCreator(dataObj) {
   cardInfo.append(followers);
   cardInfo.append(following);
   cardInfo.append(bio);
-  profile.append(profileLink);
-
+  profile.appendChild(profileLink);
+  
   // set classes
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   name.classList.add('name');
   username.classList.add('username');
 
-  // add content
-  userImg.src = dataObj.avatar_url;
-  name.textContent = dataObj.name;
-  username.textContent = dataObj.login;
-  location.textContent = `Location: ${dataObj.location}`;
-  profile.textContent = `Profile: `;
-  profileLink.href = dataObj.url;
-  followers.textContent = `Followers: ${dataObj.followers}`;
-  following.textContent = `Following: ${dataObj.following}`;
-  bio.textContent = `Bio: ${dataObj.bio}`;
-
   return card;
 }
+
+// console.log(cardCreator({html_url: "https://github.com/allisonkydy"}));
+
+// GET request
+axios.get('https://api.github.com/users/allisonkydy')
+  .then(response => {
+    console.log(response);
+    // create new card using response data
+    const newUser = cardCreator(response.data);
+
+    // add card to DOM 
+    document.querySelector('.cards').append(newUser);
+  })
