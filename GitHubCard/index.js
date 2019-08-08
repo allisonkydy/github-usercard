@@ -101,8 +101,6 @@ function cardCreator(dataObj) {
   return card;
 }
 
-// console.log(cardCreator({html_url: "https://github.com/allisonkydy"}));
-
 // GET request
 axios.get('https://api.github.com/users/allisonkydy')
   .then(response => {
@@ -112,4 +110,7 @@ axios.get('https://api.github.com/users/allisonkydy')
 
     // add card to DOM 
     document.querySelector('.cards').append(newUser);
+  })
+  .catch(err => {
+    console.log(err);
   })
