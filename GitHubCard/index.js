@@ -55,7 +55,53 @@ const followersArray = [];
 */
 
 // GET request
-axios.get('https://api.github.com/users/allisonkydy')
-  .then(response => {
-    console.log(response);
-  })
+// axios.get('https://api.github.com/users/allisonkydy')
+//   .then(response => {
+//     console.log(response);
+//   })
+
+function cardCreator(dataObj) {
+  // create new elements
+  const card = document.createElement('div');
+  const userImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // structure elements
+  card.append(userImg);
+  card.append(cardInfo);
+  cardInfo.append(name);
+  cardInfo.append(username);
+  cardInfo.append(location);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+  profile.append(profileLink);
+
+  // set classes
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  // add content
+  userImg.src = dataObj.avatar_url;
+  name.textContent = dataObj.name;
+  username.textContent = dataObj.login;
+  location.textContent = `Location: ${dataObj.location}`;
+  profile.textContent = `Profile: `;
+  profileLink.href = dataObj.url;
+  followers.textContent = `Followers: ${dataObj.followers}`;
+  following.textContent = `Following: ${dataObj.following}`;
+  bio.textContent = `Bio: ${dataObj.bio}`;
+
+  return card;
+}
