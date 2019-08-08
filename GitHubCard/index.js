@@ -24,7 +24,16 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'jeffreywhitaker',
+  'CameronAlvarado',
+  'jonyonson',
+  'NicholasInterest1',
+  'Jonathan-YungHsin-Ho',
+  'deegrams221',
+  'jaredkain',
+  'briannakeune'
+];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -114,3 +123,16 @@ axios.get('https://api.github.com/users/allisonkydy')
   .catch(err => {
     console.log(err);
   })
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`)
+    .then(response => {
+    // create new card using response data
+    const newUser = cardCreator(response.data);
+    // add card to DOM 
+    document.querySelector('.cards').append(newUser);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+})
