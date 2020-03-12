@@ -24,7 +24,16 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'jeffreywhitaker',
+  'CameronAlvarado',
+  'jonyonson',
+  'NicholasInterest1',
+  'Jonathan-YungHsin-Ho',
+  'deegrams221',
+  'jaredkain',
+  'briannakeune'
+];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +62,97 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function cardCreator(dataObj) {
+  // create new elements
+  const card = document.createElement('div');
+  const userImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // add content
+  userImg.src = dataObj.avatar_url;
+  name.textContent = dataObj.name;
+  username.textContent = dataObj.login;
+  location.textContent = `Location: ${dataObj.location || "none"}`;
+  profile.textContent = `Profile: `;
+  profileLink.href = dataObj.html_url;
+  profileLink.textContent = dataObj.html_url;
+  followers.textContent = `Followers: ${dataObj.followers}`;
+  following.textContent = `Following: ${dataObj.following}`;
+  bio.textContent = `Bio: ${dataObj.bio || "none"}`;
+
+  // structure elements
+  card.append(userImg);
+  card.append(cardInfo);
+  cardInfo.append(name);
+  cardInfo.append(username);
+  cardInfo.append(location);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+  profile.appendChild(profileLink);
+  
+  // set classes
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  return card;
+}
+
+function createFollowers(followersArray) {
+  followersArray.forEach(follower => {
+    // request follower data
+    axios.get(follower.url)
+      .then(response => {
+      // create a card for each follower
+        const newUser = cardCreator(response.data);
+      // add card to DOM
+        document.querySelector('.cards').append(newUser);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  })
+}
+
+// request my own github data
+axios.get('https://api.github.com/users/allisonkydy')
+  .then(response => {
+    // create new card using response data
+    const newUser = cardCreator(response.data);
+    // add card to DOM 
+    document.querySelector('.cards').append(newUser);
+    // request follower data
+    return axios.get(response.data.followers_url);
+  })
+  .then(response => {
+    // create and add cards for each follower
+    createFollowers(response.data);
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
+// followersArray.forEach(user => {
+//   axios.get(`https://api.github.com/users/${user}`)
+//     .then(response => {
+//     // create new card using response data
+//     const newUser = cardCreator(response.data);
+//     // add card to DOM 
+//     document.querySelector('.cards').append(newUser);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     })
+// })
